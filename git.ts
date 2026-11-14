@@ -110,7 +110,12 @@ function decodeUntilFlush(buf: Buffer): { lines: string[]; restOffset: number } 
   throw new BadRequest('command list has no flush');
 }
 
-/** Split pack bytes into sideband band-1 pkt-lines (each <= 65520 bytes). */
+/**
+ * Split pack bytes into sideband band-1 pkt-lines (each <= 65520 bytes).
+ * The band byte is the raw byte value 0x01, not ASCII '1' (0x31): the kit
+ * client reads the first payload byte as a number and rejects 0x31 with
+ * "invalid sideband band 49". Band 1 carries packfile data.
+ */
 function sidebandPackets(pack: Buffer): Buffer[] {
   const out: Buffer[] = [];
   for (let i = 0; i < pack.length; i += MAX_SIDEBAND_CHUNK) {

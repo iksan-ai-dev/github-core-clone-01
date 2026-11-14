@@ -11,7 +11,9 @@
 //   4. GET $MAKEFUN_ENV_URL/done until the body is {"done": true}. The env
 //      answers at once ({"done": false} while the suite runs), so this is a
 //      poll, not a long-held request. Never exit before it says done.
-//   5. Close the server and exit 0.
+//   5. Close the server and exit 0. The trial lifecycle is exactly these five
+//      steps in order: bind, register, poll done, close, exit 0 — the entry
+//      never exits early and never binds the env's port 8080.
 //
 // main.ts imports its own server and nothing else: no package, no Node
 // built-in, no model call.

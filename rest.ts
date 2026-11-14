@@ -473,6 +473,9 @@ export async function handleRest(req: IncomingMessage, res: ServerResponse, ctx:
   }
 
   // ------------------------------------------------------------ issues
+  // Note: issue and PR numbers come from separate per-repo counters in the
+  // Store, so creating a pull request never shifts the next issue number
+  // (and vice versa) — the suite asserts issue numbers increase by exactly 1.
   if (sub === 'issues') {
     if (rest.length === 4) {
       if (method === 'POST') {
